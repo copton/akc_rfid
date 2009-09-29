@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+	<database>
+		<host>localhost</host>
+        <user>root</user>
+        <passwd>banane</passwd>
+        <dbname>test</dbname>
+        <port>0</port>
+	</database>
+	<reader>
+        <numberofAntennas>1</numberofAntennas>
+        <numberofMultiplexers>1</numberofMultiplexers>
+		<device>/dev/ttyUSB0</device>
+	</reader>
+	<logic>
+		<interval>2</interval>
+	</logic>
+</config>
