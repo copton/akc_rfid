@@ -1,0 +1,3 @@
+- robustheit
+- includes checken
+- baudrate konfigurierbar
