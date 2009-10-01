@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <sys/select.h>
 
 #define BAUDRATE B38400
 
@@ -42,15 +43,32 @@ static unsigned int crc16(unsigned char* data, size_t length)
 
 static size_t check_read(void* buffer, size_t length)
 {
-	ssize_t res = read(fd, buffer, length);
-	if (res == -1) {
-		fprintf(stderr, "failed to read from device: %s\n", strerror(errno));
-		exit(1);
-	} else if (res == 0) {
-		fprintf(stderr, "unexpected end of file while reading from device\n");
-		exit(1);
-	} else {
-		return res;
+	{
+		fd_set set;
+		FD_ZERO(&set);
+		FD_SET(fd, &set);
+		
+		struct timeval timeout = {cfg->timeout, 0};
+
+		int res = select(fd + 1, &set, NULL, NULL, &timeout);
+		if (res == 0) {
+			fprintf(stderr, "timeout while reading from device\n");
+			exit(1);
+		}
+		assert(res == 1);
+	}
+
+	{
+		ssize_t res = read(fd, buffer, length);
+		if (res == -1) {
+			fprintf(stderr, "failed to read from device: %s\n", strerror(errno));
+			exit(1);
+		} else if (res == 0) {
+			fprintf(stderr, "unexpected end of file while reading from device\n");
+			exit(1);
+		} else {
+			return res;
+		}
 	}
 }
 
