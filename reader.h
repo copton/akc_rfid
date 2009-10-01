@@ -9,7 +9,7 @@ typedef struct {
     Tags* antenna_results;
 } reader_Result;
 
-void reader_init(Reader_Config*);
+void reader_init(config_Reader*);
 
 reader_Result* reader_read();
 void reader_free(reader_Result*);

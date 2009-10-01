@@ -7,7 +7,7 @@ typedef struct {
     char* passwd;
     char* dbname;
     int port;
-} DB_Config;
+} config_DB;
 
 typedef struct {
     
@@ -18,11 +18,11 @@ typedef struct {
     int numberofMultiplexers;
     char* device;
     int timeout;
-} Reader_Config;
+} config_Reader;
 
 typedef struct {
-    DB_Config db; 
-    Reader_Config reader;
+    config_DB db; 
+    config_Reader reader;
     Logic_Config logic;
 } Config;
 

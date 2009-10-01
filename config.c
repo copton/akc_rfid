@@ -61,7 +61,7 @@ static void copy_int(const char* path, mxml_node_t* current, const char* name, i
     free(buffer);
 }
 
-static void load_database_config(mxml_node_t* current, DB_Config* config)
+static void load_database_config(mxml_node_t* current, config_DB* config)
 {
 	if (current == NULL) {
 		fprintf(stderr, "missing config item 'database'\n");
@@ -75,7 +75,7 @@ static void load_database_config(mxml_node_t* current, DB_Config* config)
     copy_int("database", current, "port", &config->port);
 }
 
-static void load_reader_config(mxml_node_t* current, Reader_Config* config)
+static void load_reader_config(mxml_node_t* current, config_Reader* config)
 {
 	if (current == NULL) {
 		fprintf(stderr, "missing config item 'reader'\n");

@@ -2,7 +2,7 @@ TARGETS=$(patsubst %.c, %.o, $(wildcard *.c))
 
 all: akc_rfid
 
--include Makefile.depend
+-include depend.mk
 
 INCLUDE_FLAGS=-I ../3rd/mxml/install/include/
 
@@ -14,7 +14,7 @@ akc_rfid: $(TARGETS)
 
 clean:
 	rm -f *.o akc_rfid
-	rm -f Makefile.depend
+	rm -f depend.mk
 
-Makefile.depend:
+depend.mk:
 	for i in $(wildcard *.c); do gcc -M $(INCLUDE_FLAGS) $$i; done > $@

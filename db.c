@@ -6,7 +6,7 @@
 
 MYSQL* mysql;
 
-void db_init(DB_Config* config)
+void db_init(config_DB* config)
 {
     mysql = mysql_init(NULL);
     if (mysql == NULL) {
@@ -19,8 +19,6 @@ void db_init(DB_Config* config)
         fprintf(stderr, "failed to connect: %s\n", mysql_error(mysql));
         exit(1);
     }
-
-	
 }
 
 void db_shutdown()
@@ -59,7 +57,6 @@ static void write(int antenna, Tag tag, const char* type)
 
 void db_write(int antenna, Tags* enter, Tags* leave)
 {
-//	printf("db_write(%d, %d, %d)\n", antenna, enter->size, leave->size);
 	int i;
 	if (enter) {
 		for (i=0; i < enter->size; i++) {

@@ -3,12 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <termios.h>
-#include <stdio.h>
-#include <malloc.h>
 #include <errno.h>
 #include <string.h>
 #include <stdarg.h>
@@ -18,7 +14,7 @@
 #define BAUDRATE B38400
 
 static int fd;
-static Reader_Config* cfg;
+static config_Reader* cfg;
 
 typedef struct {
 	unsigned char* data;
@@ -139,7 +135,6 @@ static void execute_feig(unsigned char comAdr, unsigned char controlByte, Buffer
 static void reset_feig() {
 	Buffer in = {NULL, 0};
 	execute_feig(0xff, 0x63, in, NULL);
-	printf("reseted \n");
 	sleep(3);
 }
 
@@ -260,7 +255,7 @@ static void start()
 }
 
 
-void reader_init(Reader_Config* config)
+void reader_init(config_Reader* config)
 {
     cfg = config;
     start();
