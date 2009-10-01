@@ -178,7 +178,7 @@ static void start()
 {
 	struct termios options;
 	
-	fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY);
+	fd = open(cfg->device, O_RDWR | O_NOCTTY);
 	fcntl(fd, F_SETFL, 0);
 	tcgetattr(fd, &options);
 	cfsetispeed(&options, BAUDRATE);
