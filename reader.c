@@ -11,6 +11,8 @@
 #include <malloc.h>
 #include <errno.h>
 #include <string.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
 #define BAUDRATE B38400
 
@@ -38,6 +40,20 @@ static unsigned int crc16(unsigned char* data, size_t length)
 	return crc;
 }
 
+static size_t check_read(void* buffer, size_t length)
+{
+	ssize_t res = read(fd, buffer, length);
+	if (res == -1) {
+		fprintf(stderr, "failed to read from device: %s\n", strerror(errno));
+		exit(1);
+	} else if (res == 0) {
+		fprintf(stderr, "unexpected end of file while reading from device\n");
+		exit(1);
+	} else {
+		return res;
+	}
+}
+
 static void execute_feig(unsigned char comAdr, unsigned char controlByte, Buffer in, Buffer* out)
 {
 	{
@@ -60,7 +76,16 @@ static void execute_feig(unsigned char comAdr, unsigned char controlByte, Buffer
 
 		usleep(10000);
 
-		write(fd, send.data, send.length);
+		{
+			ssize_t res = write(fd, send.data, send.length);
+			if (res == -1) {
+				fprintf(stderr, "failed to write to device: %s\n", strerror(errno));
+				exit(1);
+			} else if (res != send.length) {
+				fprintf(stderr, "too few bytes written to device (%d of %d)\n", (int)res, (int)send.length);
+				exit(1);
+			}
+		}
 		free(send.data);
 	}
 
@@ -70,7 +95,7 @@ static void execute_feig(unsigned char comAdr, unsigned char controlByte, Buffer
 		{
 			char length;
 			do {
-				read(fd, &length,1);
+				check_read(&length, 1);
 			} while(length <= 0);
 			receive.length = length - 1;
 		}
@@ -79,7 +104,7 @@ static void execute_feig(unsigned char comAdr, unsigned char controlByte, Buffer
 		{
 			size_t curr = 0;
 			while (curr < receive.length) {
-				curr +=read(fd, receive.data + curr, receive.length - curr);
+				curr += check_read(receive.data + curr, receive.length - curr);
 			}
 		}
 
@@ -174,15 +199,28 @@ static reader_Result* scan_array()
 	return result;
 }
 
+static void check_fail(int res, const char* error, ...)
+{
+	int err = errno;
+	if (res == -1) {
+		va_list ap;
+		va_start(ap, error);
+		vfprintf(stderr, error, ap);
+		va_end(ap);
+		fprintf(stderr, ": %s\n", strerror(err));
+		exit(1);
+	} 
+}
+
 static void start()
 {
 	struct termios options;
 	
-	fd = open(cfg->device, O_RDWR | O_NOCTTY);
-	fcntl(fd, F_SETFL, 0);
-	tcgetattr(fd, &options);
-	cfsetispeed(&options, BAUDRATE);
-	cfsetospeed(&options, BAUDRATE);
+	check_fail(fd = open(cfg->device, O_RDWR | O_NOCTTY), "failed to open device '%s'", cfg->device);
+	check_fail(fcntl(fd, F_SETFL, 0), "fcntl failed");
+	check_fail(tcgetattr(fd, &options), "tcgetattr failed");
+	check_fail(cfsetispeed(&options, BAUDRATE), "cfsetispeed failed");
+	check_fail(cfsetospeed(&options, BAUDRATE), "cfsetospeed failed");
 
 	options.c_cflag |= (CLOCAL | CREAD);
 	options.c_cflag |= PARENB;
@@ -195,7 +233,7 @@ static void start()
 	options.c_iflag &= ~(INPCK | ISTRIP);
 	options.c_iflag &= ~(IXON | IXOFF | IXANY);
 	options.c_oflag &= ~OPOST;
-	tcsetattr(fd, TCSANOW, &options);
+	check_fail(tcsetattr(fd, TCSANOW, &options), "tcsetattr failed");
 
 	/* initial reset of feig */
 	reset_feig();
