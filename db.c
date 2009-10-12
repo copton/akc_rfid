@@ -14,8 +14,8 @@ void db_init(config_DB* config)
         exit(1);
     }
 
-    mysql = mysql_real_connect(mysql, config->host, config->user, config->passwd, config->dbname, config->port, NULL, 0);
-    if (mysql == NULL) {
+    MYSQL* res = mysql_real_connect(mysql, config->host, config->user, config->passwd, config->dbname, config->port, NULL, 0);
+    if (res == NULL) {
         fprintf(stderr, "failed to connect: %s\n", mysql_error(mysql));
         exit(1);
     }
