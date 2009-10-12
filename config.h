@@ -15,7 +15,6 @@ typedef struct {
 
 typedef struct {
     int numberofAntennas;
-    int numberofMultiplexers;
     char* device;
     int timeout;
 } config_Reader;

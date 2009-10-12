@@ -84,7 +84,6 @@ static void load_reader_config(mxml_node_t* current, config_Reader* config)
 
     copy_text("reader", current, "device", &config->device); 
     copy_int("reader", current, "numberofAntennas", &config->numberofAntennas);
-    copy_int("reader", current, "numberofMultiplexers", &config->numberofMultiplexers);
     copy_int("reader", current, "timeout", &config->timeout);
 }
 

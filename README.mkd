@@ -1,0 +1,100 @@
+This is a markdown file. http://daringfireball.net/projects/markdown/
+
+Abstract
+=======
+akc\_rfid stands for "augmented knight castle - radio-frequency identification". 
+
+This software was written for the dissertation of Steve Hinske
+<hinske@inf.ethz.ch> entitled "Digitally Augmenting Traditional Play
+Environments".
+
+It queries a locally connected RFID reader and writes enter and leave events for
+detected RFID chips into a database.
+
+Technical details
+=================
+The supported RFID reader is a [FEIG ID ISC.MR101-A](http://www.feig.de/index.php?option=com_content&task=view&id=99&Itemid=126&lang=en)
+
+The supported database is a MySQL 5.0 database.
+
+Dependencies
+============
+ - [mysql](http://www.mysql.com/) version 5.0
+ - [mini xml](http://www.minixml.org/) version 2.6
+
+Setup
+=====
+
+Database details
+----------------
+The software expects a table according to the following create statement:
+
+	create table events (
+		id bigint unsigned auto_increment not null, 
+		antenna tinyint unsigned not null, 
+		time timestamp not null, 
+		tag bigint unsigned not null, 
+		type enum('enter', 'leave') not null, 
+		primary key(id)
+	);
+
+mini xml
+--------
+Build and install mini xml according to the README of the project. 
+
+It is recommended to configure mini xml with --enable-threads=no.
+
+Compiling
+=========
+Adjust the Makefile to make your mxml installation visible to the
+compiler, e.g. modify the -I and the -L flags. The mysql header and
+library files are considered to be installed in your system's default
+paths. If not add further -I and -L flags for it.
+
+Build the source with `make`.
+
+Runtime
+=======
+Command line
+------------
+The executable takes one optional parameter which is the name of the
+configuration file. The default name for the configuration file is
+rfid\_cfg.xml.
+
+Configuration
+-------------
+The configuration file is a XML 1.0 file. It must be valid according to
+the XML Schema akc\_rfid\_config.xsd.
+
+The sections are:
+
+ - database: configuration for the MySQL connection
+ - reader: configuration for the RFID reader driver
+ - logic: configuration for the program logic 
+
+### database
+ * host: the hostname of the MySQL server
+ * user: the username to use
+ * passwd: the password to use
+ * dbname: the name of the database to use
+ * port: the port to use. Hereby 0 stands for the default port, which is 3306
+
+### reader
+ * numberofAntennas: how many antennas are attached to the reader
+ * device: the device name for the serial connection to the reader
+ * timeout: read timeout for the reader
+ 
+### logic
+Currently there are no configuration items for this section.
+
+Copying
+=======
+This software is published under the GPL version 2 and not any later.
+
+Authors
+=======
+Alexander Bernauer <bernauer@inf.ethz.ch>
+
+References
+==========
+The reader module was derived from an implementation of Raffael Bachmann <raffael.bachmann@a4d.ch>

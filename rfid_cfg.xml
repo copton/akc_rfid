@@ -9,7 +9,6 @@
 	</database>
 	<reader>
         <numberofAntennas>1</numberofAntennas>
-        <numberofMultiplexers>1</numberofMultiplexers>
 		<device>/dev/ttyUSB0</device>
         <timeout>3</timeout>
 	</reader>
