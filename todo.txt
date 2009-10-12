@@ -1,3 +1,2 @@
-- robustheit
-- includes checken
+- cmake
 - baudrate konfigurierbar
