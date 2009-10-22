@@ -23,7 +23,7 @@ static FILE* get_config_file(int argc, char** argv)
 	if (argc == 2) {
 		filename = argv[1];
 	} else {
-		filename = "./rfid_cfg.xml";
+		filename = "./akc_rfid_config.xml";
 	}
 	
 	FILE* stream = fopen(filename, "r");

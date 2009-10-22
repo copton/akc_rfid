@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="database">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="host" type="xs:string" />	
+							<xs:element name="user" type="xs:string" />	
+							<xs:element name="passwd" type="xs:string" />	
+							<xs:element name="dbname" type="xs:string" />	
+							<xs:element name="port" type="xs:integer" />	
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="reader">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="numberofAntennas" type="xs:integer" />	
+							<xs:element name="device" type="xs:string" />	
+							<xs:element name="timeout" type="xs:integer" />	
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="logic">
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

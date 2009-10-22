@@ -1,4 +1,4 @@
-This is a markdown file. http://daringfireball.net/projects/markdown/
+This is a [markdown](http://daringfireball.net/projects/markdown/) file.
 
 Abstract
 =======
@@ -8,8 +8,7 @@ This software was written for the dissertation of Steve Hinske
 <hinske@inf.ethz.ch> entitled "Digitally Augmenting Traditional Play
 Environments".
 
-It queries a locally connected RFID reader and writes enter and leave events for
-detected RFID chips into a database.
+It queries a locally connected RFID reader and writes enter and leave events for detected RFID tags into a database.
 
 Technical details
 =================
@@ -25,8 +24,8 @@ Dependencies
 Setup
 =====
 
-Database details
-----------------
+Database
+--------
 The software expects a table according to the following create statement:
 
 	create table events (
@@ -64,7 +63,10 @@ rfid\_cfg.xml.
 Configuration
 -------------
 The configuration file is a XML 1.0 file. It must be valid according to
-the XML Schema akc\_rfid\_config.xsd.
+the XML Schema akc\_rfid\_config.xsd. Validity can for example be checked with
+[xmlstarlet](http://xmlstar.sourceforge.net/):
+
+	xmlstarlet val -e -s akc_rfid_config.xsd akc_rfid_config.xml
 
 The sections are:
 
@@ -89,7 +91,7 @@ Currently there are no configuration items for this section.
 
 Copying
 =======
-This software is published under the GPL version 2 and not any later.
+This software is published under the [GPL version 2](http://www.gnu.org/licenses/gpl-2.0.html).
 
 Authors
 =======
