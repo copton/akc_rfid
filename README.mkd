@@ -113,7 +113,7 @@ Command line
 ============
 The executable takes one optional parameter which is the name of the
 configuration file. The default name for the configuration file is
-./akc\_rfid\_cfg.xml.
+./akc\_rfid\_config.xml.
 
 Copying
 =======
