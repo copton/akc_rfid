@@ -45,10 +45,14 @@ It is recommended to configure mini xml with --enable-threads=no.
 
 Compiling
 =========
-Adjust the Makefile to make your mxml installation visible to the
-compiler, e.g. modify the -I and the -L flags. The mysql header and
-library files are considered to be installed in your system's default
-paths. If not add further -I and -L flags for it.
+Write a config.mk file to make your mxml installation visible to the
+compiler, e.g. the INCLUDE\_FLAGS and the LIB\_FLAGS variables. Example:
+
+	INCLUDE_FLAGS=-I ../3rd/mxml/install/include/
+	LIB_FLAGS=-L ../3rd/mxml/install/lib
+
+The mysql header and library files are considered to be installed in your
+system's default paths. If not add further -I and -L flags for it.
 
 Build the source with `make`.
 

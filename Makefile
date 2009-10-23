@@ -3,9 +3,8 @@ TARGETS=$(patsubst %.c, %.o, $(wildcard *.c))
 all: akc_rfid
 
 -include depend.mk
+include config.mk
 
-INCLUDE_FLAGS=-I ../3rd/mxml/install/include/
-LIB_FLAGS=-L ../3rd/mxml/install/lib
 
 %.o: %.c
 	gcc  -Wall -g -c $< $(INCLUDE_FLAGS)
