@@ -2,3 +2,4 @@
 depend.mk
 config.mk
 akc_rfid
+akc_rfid_config.xml

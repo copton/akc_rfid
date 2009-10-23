@@ -23,6 +23,72 @@ Dependencies
 
 Setup
 =====
+mini xml
+--------
+Build and install mini xml according to the README of the project. 
+
+It is recommended to configure mini xml with `--enable-threads=no`.
+
+Compiletime Configuration
+-------------------------
+Write a file called config.mk file to make your mxml installation visible to
+the compiler, e.g. set the INCLUDE\_FLAGS and the LIB\_FLAGS variables. Example:
+
+	INCLUDE_FLAGS=-I ../3rd/mxml/install/include/
+	LIB_FLAGS=-L ../3rd/mxml/install/lib
+
+The mysql header and library files are considered to be installed in your
+system's default paths. If not add further -I and -L flags for it.
+
+Runtime Configuration
+---------------------
+The configuration file for akc\_rfid is a XML 1.0 file. It must be valid
+according to the XML Schema akc\_rfid\_config.xsd. Validity can be checked for
+example with [xmlstarlet](http://xmlstar.sourceforge.net/):
+
+	xmlstarlet val -e -s akc_rfid_config.xsd akc_rfid_config.xml
+
+### sections
+The sections of the config file are:
+
+ - database: configuration for the MySQL connection
+ - reader: configuration for the RFID reader driver
+ - logic: configuration for the program logic 
+
+#### database
+ * host: the hostname of the MySQL server
+ * user: the username to use
+ * passwd: the password to use
+ * dbname: the name of the database to use
+ * port: the port to use. Hereby 0 stands for the default port, which is 3306
+
+#### reader
+ * numberofAntennas: how many antennas are attached to the reader
+ * device: the device name for the serial connection to the reader
+ * timeout: read timeout for the reader
+ 
+#### logic
+Currently there are no configuration items for this section.
+
+### example
+
+	<?xml version="1.0"?>
+	<config>
+		<database>
+			<host>localhost</host>
+			<user>root</user>
+			<passwd>foobar</passwd>
+			<dbname>test</dbname>
+			<port>0</port>
+		</database>
+		<reader>
+			<numberofAntennas>1</numberofAntennas>
+			<device>/dev/ttyUSB0</device>
+			<timeout>3</timeout>
+		</reader>
+		<logic>
+		</logic>
+	</config>
 
 Database
 --------
@@ -37,61 +103,17 @@ The software expects a table according to the following create statement:
 		primary key(id)
 	);
 
-mini xml
---------
-Build and install mini xml according to the README of the project. 
-
-It is recommended to configure mini xml with --enable-threads=no.
-
 Compiling
 =========
-Write a config.mk file to make your mxml installation visible to the
-compiler, e.g. the INCLUDE\_FLAGS and the LIB\_FLAGS variables. Example:
-
-	INCLUDE_FLAGS=-I ../3rd/mxml/install/include/
-	LIB_FLAGS=-L ../3rd/mxml/install/lib
-
-The mysql header and library files are considered to be installed in your
-system's default paths. If not add further -I and -L flags for it.
-
 Build the source with `make`.
+Clean the directory with `make clean`.
+There are no further make targets.
 
-Runtime
-=======
 Command line
-------------
+============
 The executable takes one optional parameter which is the name of the
 configuration file. The default name for the configuration file is
-rfid\_cfg.xml.
-
-Configuration
--------------
-The configuration file is a XML 1.0 file. It must be valid according to
-the XML Schema akc\_rfid\_config.xsd. Validity can for example be checked with
-[xmlstarlet](http://xmlstar.sourceforge.net/):
-
-	xmlstarlet val -e -s akc_rfid_config.xsd akc_rfid_config.xml
-
-The sections are:
-
- - database: configuration for the MySQL connection
- - reader: configuration for the RFID reader driver
- - logic: configuration for the program logic 
-
-### database
- * host: the hostname of the MySQL server
- * user: the username to use
- * passwd: the password to use
- * dbname: the name of the database to use
- * port: the port to use. Hereby 0 stands for the default port, which is 3306
-
-### reader
- * numberofAntennas: how many antennas are attached to the reader
- * device: the device name for the serial connection to the reader
- * timeout: read timeout for the reader
- 
-### logic
-Currently there are no configuration items for this section.
+./akc\_rfid\_cfg.xml.
 
 Copying
 =======
